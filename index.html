@@ -1,140 +1,18 @@
-<!doctype html>
-<html lang="th">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>สรรพาวุธ Flood Monitor</title>
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sapphawut Flood Monitor</title>
 <style>
-:root{--bg:#07111f;--card:#0e1b2d;--line:#22334a;--text:#eef5ff;--muted:#9fb0c7;--good:#38d996;--warn:#ffc857;--danger:#ff647c;--blue:#55a8ff}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#07111f,#0a1525);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:1100px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-h1{font-size:25px;margin:0 0 4px}.sub{color:var(--muted);font-size:13px}.pill{padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:#0b1828;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.card{background:rgba(14,27,45,.92);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 25px #0002}
-.big{font-size:31px;font-weight:800;margin:7px 0}.label{color:var(--muted);font-size:12px}.status{font-weight:700}.good{color:var(--good)}.warn{color:var(--warn)}.danger{color:var(--danger)}.blue{color:var(--blue)}
-.section{margin-top:14px}.section h2{font-size:17px;margin:0 0 10px}.six{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.slot{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0a1727}.slot b{font-size:13px}.bar{height:7px;background:#17283d;border-radius:99px;overflow:hidden;margin:8px 0}.fill{height:100%;border-radius:99px}.timeline{display:grid;gap:8px}.row{display:grid;grid-template-columns:120px 1fr 80px;gap:10px;align-items:center;border-bottom:1px solid #18283c;padding:9px 0;font-size:13px}.row:last-child{border-bottom:0}.links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.link{display:block;text-decoration:none;color:var(--text);border:1px solid var(--line);padding:13px;border-radius:12px;background:#0a1727}.link small{display:block;color:var(--muted);margin-top:4px}
-footer{color:var(--muted);font-size:11px;margin:18px 2px;line-height:1.6}
-@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.six{grid-template-columns:repeat(2,1fr)}.links{grid-template-columns:1fr}.row{grid-template-columns:90px 1fr 65px}}
-@media(max-width:460px){.grid,.six{grid-template-columns:1fr 1fr}.big{font-size:25px}.wrap{padding:12px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <h1>🌊 สรรพาวุธ Flood Monitor</h1>
-      <div class="sub">Bang Na • ถนนสรรพาวุธ • อัปเดตอัตโนมัติ</div>
-    </div>
-    <div class="pill">อัปเดตล่าสุด: <span id="updated">กำลังโหลด…</span></div>
-  </div>
-
-  <div class="grid">
-    <div class="card"><div class="label">อุณหภูมิ</div><div class="big" id="temp">—</div><div class="status" id="weather">กำลังโหลด</div></div>
-    <div class="card"><div class="label">โอกาสฝนช่วงนี้</div><div class="big blue" id="rain">—</div><div class="label">Bang Na forecast</div></div>
-    <div class="card"><div class="label">ฝน 24 ชม.โดยประมาณ</div><div class="big" id="rain24">—</div><div class="label">จาก forecast model</div></div>
-    <div class="card"><div class="label">ระดับเฝ้าระวัง</div><div class="big warn" id="risk">กำลังประเมิน</div><div class="label">เป็นดัชนี ไม่ใช่ระดับน้ำจริง</div></div>
-  </div>
-
-  <div class="section card">
-    <h2>⏱️ พยากรณ์ 6 ชั่วโมงข้างหน้า</h2>
-    <div class="six" id="hours"></div>
-  </div>
-
-  <div class="section card">
-    <h2>📅 แนวโน้ม 30 ก.ย. – 4 ต.ค. 2569</h2>
-    <div class="timeline" id="days"></div>
-  </div>
-
-  <div class="section card">
-    <h2>🚨 ปัจจัยเฝ้าระวัง</h2>
-    <div class="timeline">
-      <div class="row"><b>ฝน</b><span>ดูฝนรายชั่วโมงในบางนา</span><span id="rainFlag" class="status">—</span></div>
-      <div class="row"><b>น้ำทะเลหนุน</b><span>ช่วงเฝ้าระวัง 29 ก.ย.–4 ต.ค. 2569</span><span class="warn status">เฝ้าระวัง</span></div>
-      <div class="row"><b>น้ำเหนือ</b><span>ต้องติดตามประกาศกรมชลประทาน/กองอำนวยการน้ำ</span><span class="warn status">เฝ้าระวัง</span></div>
-      <div class="row"><b>น้ำบนถนนจริง</b><span>ต้องยืนยันจากรายงาน/กล้องของ กทม.</span><span class="blue status">ตรวจสอบ</span></div>
-    </div>
-  </div>
-
-  <div class="section card">
-    <h2>🔗 แหล่งข้อมูลทางการ</h2>
-    <div class="links">
-      <a class="link" href="https://dds.bangkok.go.th/" target="_blank">สำนักการระบายน้ำ กทม.<small>สถานการณ์น้ำ / น้ำท่วม</small></a>
-      <a class="link" href="https://www5.tmd.go.th/forecast/sevenday" target="_blank">กรมอุตุนิยมวิทยา<small>พยากรณ์อากาศ</small></a>
-      <a class="link" href="https://www.rid.go.th/" target="_blank">กรมชลประทาน<small>สถานการณ์น้ำ / น้ำเหนือ</small></a>
-    </div>
-  </div>
-
-  <footer>
-    เว็บนี้ใช้ข้อมูลพยากรณ์อากาศจาก Open-Meteo และลิงก์แหล่งข้อมูลทางการเพื่อประกอบการติดตาม
-    ค่าความเสี่ยงเป็นการคำนวณเชิงเตือนภัยจากฝนและปัจจัยที่ตั้งไว้ ไม่ใช่การวัดระดับน้ำบนถนนสรรพาวุธแบบเรียลไทม์
-    หากต้องการยืนยันน้ำท่วมบนถนน ให้ตรวจข้อมูลของ กทม. ก่อนเดินทาง
-  </footer>
-</div>
-
+body{margin:0;background:#07111f;color:#eef5ff;font:14px system-ui;padding:16px}main{max-width:1100px;margin:auto}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.card{background:#0e1b2d;border:1px solid #26384f;border-radius:14px;padding:14px;margin-top:10px}.big{font-size:30px;font-weight:800}.muted{color:#9fb0c7;font-size:12px}table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid #26384f;text-align:left}a{color:#58a9ff}@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}}
+</style><main>
+<h1>🌊 Sapphawut Flood Monitor</h1><div class="muted">ถนนสรรพาวุธ • บางนา • อัปเดตอัตโนมัติ</div>
+<section class="grid"><div class="card">อุณหภูมิ<div id="temp" class="big">—</div></div><div class="card">โอกาสฝน<div id="rain" class="big">—</div></div><div class="card">ฝน 24 ชม.<div id="rain24" class="big">—</div></div><div class="card">Flood Risk<div id="risk" class="big">—</div></div></section>
+<section class="card"><h2>⏱️ 6 ชั่วโมงข้างหน้า</h2><div id="hours" class="grid"></div></section>
+<section class="card"><h2>🏞️ ระดับน้ำเขื่อน กฟผ.</h2><div class="muted">GitHub Actions ดึงจากแหล่งทางการทุก 30 นาที</div><table><thead><tr><th>เขื่อน</th><th>ระดับปัจจุบัน</th><th>สูงสุด</th><th>น้ำเข้า</th><th>ระบาย</th><th>อัปเดต</th></tr></thead><tbody id="dams"><tr><td colspan="6">กำลังโหลด…</td></tr></tbody></table></section>
+<section class="card"><h2>📹 CCTV / ระดับน้ำถนน</h2><a target="_blank" href="https://floodbangkok.bangkok.go.th/">Flood Bangkok — ระดับน้ำ + CCTV กทม.</a><br><a target="_blank" href="https://weather.bangkok.go.th/Flood/">สถานีวัดน้ำถนน กทม.</a><br><a target="_blank" href="https://cpudapp.bangkok.go.th/bmatraffic/">BMA Traffic CCTV</a></section>
+<footer class="muted">Dashboard เป็นเครื่องมือติดตาม ไม่ใช่ประกาศเตือนภัยอย่างเป็นทางการ</footer>
+</main>
 <script>
-const LAT=13.6670, LON=100.6250;
-const API=`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,precipitation_probability,precipitation,rain,weather_code&forecast_days=7&timezone=Asia%2FBangkok`;
-
-function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function weatherText(c){
- if([95,96,99].includes(c)) return 'พายุฝนฟ้าคะนอง';
- if([61,63,65,80,81,82].includes(c)) return 'มีฝน';
- if([51,53,55,56,57].includes(c)) return 'ฝนปรอย';
- if([1,2,3].includes(c)) return 'มีเมฆ';
- return 'อากาศค่อนข้างแจ่มใส';
-}
-function riskScore(p, rain24){
- let s=0;
- if(p>=70)s+=2; else if(p>=40)s+=1;
- if(rain24>=30)s+=2; else if(rain24>=10)s+=1;
- // sea-tide watch window currently configured for 29 Sep–4 Oct
- s+=1;
- return s>=4?['สูง','danger']:s>=2?['ปานกลาง','warn']:['ต่ำ','good'];
-}
-async function load(){
- try{
-  const d=await fetch(API,{cache:'no-store'}).then(r=>r.json());
-  const h=d.hourly, now=new Date();
-  let idx=0, best=1e9;
-  h.time.forEach((t,i)=>{let diff=Math.abs(new Date(t)-now); if(diff<best){best=diff;idx=i}});
-  const p=h.precipitation_probability[idx]||0, t=h.temperature_2m[idx];
-  let rain24=0; for(let i=idx;i<Math.min(idx+24,h.time.length);i++) rain24+=h.precipitation[i]||0;
-  document.getElementById('temp').textContent=Math.round(t)+'°C';
-  document.getElementById('rain').textContent=p+'%';
-  document.getElementById('weather').textContent=weatherText(h.weather_code[idx]);
-  document.getElementById('rain24').textContent=rain24.toFixed(1)+' mm';
-  const [r,cls]=riskScore(p,rain24); const re=document.getElementById('risk'); re.textContent=r; re.className='big '+cls;
-  document.getElementById('rainFlag').textContent=p>=50?'สูง':'ปานกลาง';
-  document.getElementById('rainFlag').className='status '+(p>=50?'danger':'warn');
-
-  let hs='';
-  for(let j=idx;j<Math.min(idx+6,h.time.length);j++){
-    const dt=new Date(h.time[j]); const pp=h.precipitation_probability[j]||0;
-    hs+=`<div class="slot"><b>${dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}</b>
-      <div class="label">${Math.round(h.temperature_2m[j])}°C • ${weatherText(h.weather_code[j])}</div>
-      <div class="bar"><div class="fill" style="width:${pp}%"></div></div>
-      <div class="label">โอกาสฝน ${pp}%</div></div>`;
-  }
-  document.getElementById('hours').innerHTML=hs;
-
-  let ds='';
-  const seen={};
-  for(let i=idx;i<h.time.length;i++){
-    const day=h.time[i].slice(0,10); if(seen[day])continue;
-    if(day>'2026-10-04')break; seen[day]=1;
-    let ps=h.precipitation_probability.slice(i,i+24), avg=Math.max(...ps.filter(x=>x!=null));
-    let rr=0; for(let k=i;k<Math.min(i+24,h.time.length);k++)rr+=h.precipitation[k]||0;
-    ds+=`<div class="row"><b>${new Date(day+'T12:00:00').toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short'})}</b>
-      <span>ฝนสูงสุด ${avg}% • ปริมาณคาดการณ์ ${rr.toFixed(1)} mm</span>
-      <span class="status ${avg>=60?'danger':avg>=40?'warn':'good'}">${avg>=60?'สูง':avg>=40?'กลาง':'ต่ำ'}</span></div>`;
-  }
-  document.getElementById('days').innerHTML=ds;
-  document.getElementById('updated').textContent=new Date().toLocaleString('th-TH');
- }catch(e){
-  document.getElementById('updated').textContent='โหลดข้อมูลไม่ได้';
-  document.getElementById('risk').textContent='ตรวจสอบ API';
- }
-}
-load(); setInterval(load,10*60*1000);
-</script>
-</body>
-</html>
+const lat=13.667,lon=100.625,api=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,precipitation_probability,precipitation,weather_code&forecast_days=7&timezone=Asia%2FBangkok`;
+const wt=c=>[95,96,99].includes(c)?'พายุฝน':[61,63,65,80,81,82].includes(c)?'ฝน':[1,2,3].includes(c)?'เมฆ':'แจ่มใส';
+async function load(){try{let d=await fetch(api,{cache:'no-store'}).then(r=>r.json()),h=d.hourly,n=new Date(),i=0,b=1e20;h.time.forEach((t,j)=>{let x=Math.abs(new Date(t)-n);if(x<b)b=x,i=j});let p=h.precipitation_probability[i]||0,r=0;for(let j=i;j<i+24;j++)r+=h.precipitation[j]||0;temp.textContent=Math.round(h.temperature_2m[i])+'°C';rain.textContent=p+'%';rain24.textContent=r.toFixed(1)+' mm';risk.textContent=(p>=70||r>=30)?'สูง':(p>=40||r>=10)?'เฝ้าระวัง':'ต่ำ';hours.innerHTML='';for(let j=i;j<i+6;j++)hours.innerHTML+=`<div class="card"><b>${new Date(h.time[j]).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}</b><div>${Math.round(h.temperature_2m[j])}°C • ${wt(h.weather_code[j])}</div><div class="muted">ฝน ${h.precipitation_probability[j]||0}%</div></div>`}catch(e){risk.textContent='โหลดไม่ได้'}}
+async function damsLoad(){try{let d=await fetch('data/egat.json?x='+Date.now()).then(r=>r.json());dams.innerHTML=d.rows.map(x=>`<tr><td>${x.dam||'-'}</td><td>${x.level||'-'}</td><td>${x.max||'-'}</td><td>${x.inflow||'-'}</td><td>${x.release||'-'}</td><td>${x.updated||'-'}</td></tr>`).join('')}catch(e){dams.innerHTML='<tr><td colspan="6">ยังไม่มีข้อมูล</td></tr>'}}
+load();damsLoad();setInterval(load,600000);setInterval(damsLoad,600000);
+</script></html>
